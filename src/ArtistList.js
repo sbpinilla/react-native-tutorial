@@ -9,10 +9,13 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   FlatList,
-  ListView
+  ListView,
+  TouchableOpacity 
 } from 'react-native';
 
 import ArtistBox from "./ArtistBox";
+import { Actions } from 'react-native-router-flux';
+
 
 export default class ArtistList extends Component {
 
@@ -53,36 +56,50 @@ export default class ArtistList extends Component {
         
     }
 
+    handlePress(artist){
+        
+       // console.warn('artist',artist);
 
-  render() {
-    
-    return (
+       Actions.artistDetail( {artist:artist} )
 
-        <ListView
-            enableEmptySections = {true}
-            dataSource = {this.state.dataSource}
-            renderRow = {(rowData)=> <ArtistBox artist = {rowData}/> }
+    }
+
+
+    render() {
+        
+        return (
+
+            <ListView
+                enableEmptySections = {true}
+                dataSource = {this.state.dataSource}
+                renderRow = {(rowData)=> {
+                return (
+                    <TouchableOpacity 
+                    onPress ={ () => this.handlePress(rowData)} >
+                        <ArtistBox artist = {rowData}/>
+                    </TouchableOpacity>
+                )} }
+            />
+    /*
+        <FlatList
+            data ={this.props.artists}
+            renderItem={({item}) => <ArtistBox artist = {item}/>}
+
         />
-/*
-     <FlatList
-        data ={this.props.artists}
-        renderItem={({item}) => <ArtistBox artist = {item}/>}
+    */    
+        /* <ScrollView>
 
-      />
-  */    
-     /* <ScrollView>
+        {
+            Array(1000).fill(artist).map(artist => {
 
-      {
-         Array(1000).fill(artist).map(artist => {
+            return <ArtisBox artist = {artist}/>
+            })
+        }
 
-          return <ArtisBox artist = {artist}/>
-         })
-      }
+        </ScrollView>*/
 
-      </ScrollView>*/
-
-    );
-  }
+        );
+    }
 }
 
 const styles = StyleSheet.create({
